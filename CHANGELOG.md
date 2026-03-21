@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.2.0] - 2026-03-20
+
+### Changed
+
+#### Cross-Cutting: Policy Engine Rename
+- **Renamed "The Gavel" to "The Sentry"** across all specs, schemas, examples, and test vectors to match the current ACL reference implementation (`the-sentry.ts`)
+- Updated `metadata.engine` values from `"the-gavel"` to `"the-sentry"` in PVS-1 spec, schema, examples, and test vectors
+- Updated PVS-1 Section 3 heading from "The Gavel Integration" to "The Sentry Integration"
+- Updated ADP-1 references and sample payloads
+- Updated README architecture diagram
+- Updated LM review documents
+
+**Migration Guide:**
+- Consumers checking `metadata.engine === "the-gavel"` should update to `"the-sentry"`
+- The PVS-1 schema does not constrain the `engine` value, so existing records remain valid
+
+---
+
+## [1.1.1] - 2026-03-20
+
 ### Added
 - JSON Schema definitions for ADP-1 and PVS-1
 - Example certificates, payloads, and test vectors
@@ -91,7 +113,7 @@ high-stakes scenarios where the engine lacks confidence in its verdict.
 |---------------|-----------------|-----------------|--------------|
 | AIP-1 | 1.0.0 | 2025-12-09 | 2025-12-14 |
 | ADP-1 | 1.0.0 | 2025-12-10 | 2025-12-14 |
-| PVS-1 | 1.1.0 | 2025-12-10 | 2025-12-23 |
+| PVS-1 | 1.2.0 | 2025-12-10 | 2026-03-20 |
 | CTX-1 | 1.0.0 | 2025-12-10 | 2025-12-14 |
 
 ---
@@ -110,6 +132,8 @@ high-stakes scenarios where the engine lacks confidence in its verdict.
 
 ---
 
-[Unreleased]: https://github.com/chrisbaber/agent-control-specs/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/chrisbaber/agent-control-specs/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/chrisbaber/agent-control-specs/compare/v1.1.1...v1.2.0
+[1.1.1]: https://github.com/chrisbaber/agent-control-specs/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/chrisbaber/agent-control-specs/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/chrisbaber/agent-control-specs/releases/tag/v1.0.0

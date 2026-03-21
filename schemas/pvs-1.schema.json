@@ -41,7 +41,7 @@
       "properties": {
         "engine": {
           "type": "string",
-          "description": "Policy engine identifier (e.g., 'the-gavel')"
+          "description": "Policy engine identifier (e.g., 'the-sentry')"
         },
         "engine_version": {
           "type": "string",
@@ -82,7 +82,7 @@
       "confidence_score": 0.97,
       "policy_set": ["No PII leakage", "No financial advice"],
       "metadata": {
-        "engine": "the-gavel",
+        "engine": "the-sentry",
         "engine_version": "1.0.0",
         "latency_ms": 520
       }
@@ -95,7 +95,7 @@
       "confidence_score": 0.98,
       "policy_set": ["No PII leakage", "No financial advice"],
       "metadata": {
-        "engine": "the-gavel",
+        "engine": "the-sentry",
         "latency_ms": 650
       }
     }

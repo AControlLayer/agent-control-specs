@@ -64,7 +64,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 2. **Minimal but Extensible** — Small core schema (Action → Observation → Reflection), with well-defined extension points.
 3. **AIP-Aware** — Every run and step is tied back to cryptographic identity (AIP-1) without requiring consumers to understand PKI details.
 4. **Streaming-Friendly** — Structured so events can be emitted incrementally during a run.
-5. **Audit & Control Ready** — Suitable for security analytics, policy enforcement (e.g., The Gavel), and tamper-evident audit chains.
+5. **Audit & Control Ready** — Suitable for security analytics, policy enforcement (e.g., The Sentry), and tamper-evident audit chains.
 
 ## 3. Core Concepts
 
@@ -215,7 +215,7 @@ Implementations MAY include additional AIP-derived metadata in `agent` or `metad
 
 ## 5. Policy Verdicts
 
-ADP-1 RECOMMENDS representing policy verdicts (e.g., from The Gavel) as specialized steps:
+ADP-1 RECOMMENDS representing policy verdicts (e.g., from The Sentry) as specialized steps:
 
 ```jsonc
 {
@@ -236,7 +236,7 @@ ADP-1 RECOMMENDS representing policy verdicts (e.g., from The Gavel) as speciali
       "confidence_score": 0.98
     }
   },
-  "metadata": {"kind": "policy_verdict", "policy_engine": "the-gavel"}
+  "metadata": {"kind": "policy_verdict", "policy_engine": "the-sentry"}
 }
 ```
 

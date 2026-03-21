@@ -12,7 +12,7 @@
     "Professional tone"
   ],
   "metadata": {
-    "engine": "the-gavel",
+    "engine": "the-sentry",
     "engine_version": "1.0.0",
     "latency_ms": 650,
     "tenant_id": "tenant-456",

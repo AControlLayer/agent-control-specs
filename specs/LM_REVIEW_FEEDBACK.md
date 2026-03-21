@@ -98,7 +98,7 @@ The primary areas for improvement revolve around **Operational Reality** (dealin
         ]
         ```
 2.  **Versioning:**
-    -   Ensure `version: "pvs-1"` is actually emitted by `The Gavel` (currently missing in code).
+    -   Ensure `version: "pvs-1"` is actually emitted by `The Sentry` (currently missing in code).
 
 ---
 
