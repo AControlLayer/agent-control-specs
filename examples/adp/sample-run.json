@@ -123,7 +123,7 @@
       },
       "metadata": {
         "kind": "policy_verdict",
-        "policy_engine": "the-gavel",
+        "policy_engine": "the-sentry",
         "latency_ms": 450
       }
     }

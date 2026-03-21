@@ -7,7 +7,7 @@ status: Request for Comment (RFC)
 type: Standards Track
 category: Policy
 created: 2025-12-10
-updated: 2025-12-23
+updated: 2026-03-20
 requires: ADP-1
 replaces: None
 ---
@@ -20,7 +20,7 @@ This document specifies a standards track protocol for the Agent Control Layer e
 
 ## Abstract
 
-The Policy Verdict Schema (PVS-1) defines a standard JSON structure for policy enforcement decisions produced by ACL's **The Gavel** (and compatible policy engines). It is designed to be:
+The Policy Verdict Schema (PVS-1) defines a standard JSON structure for policy enforcement decisions produced by ACL's **The Sentry** (and compatible policy engines). It is designed to be:
 
 - **Simple** enough to embed inside ADP-1 agent steps
 - **Expressive** enough for security, compliance, and monitoring
@@ -30,7 +30,7 @@ The Policy Verdict Schema (PVS-1) defines a standard JSON structure for policy e
 
 1. [Terminology](#1-terminology)
 2. [Schema](#2-schema)
-3. [The Gavel Integration](#3-the-gavel-integration)
+3. [The Sentry Integration](#3-the-sentry-integration)
 4. [Embedding in ADP-1](#4-embedding-in-adp-1)
 5. [Security Considerations](#5-security-considerations)
 6. [Conformance](#6-conformance)
@@ -48,7 +48,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 **Policy Engine**: A system that evaluates content against policies and produces verdicts.
 
-**The Gavel**: ACL's reference policy engine implementation.
+**The Sentry**: ACL's reference policy engine implementation.
 
 ## 2. Schema
 
@@ -64,7 +64,7 @@ A PVS-1 verdict is a single JSON object with the following fields:
   "confidence_score": 0.97,
   "policy_set": ["No PII leakage", "No financial advice"],
   "metadata": {
-    "engine": "the-gavel",
+    "engine": "the-sentry",
     "engine_version": "2.0.0",
     "latency_ms": 520,
     "tenant_id": "tenant-123",
@@ -107,9 +107,9 @@ Consumers MUST ignore unknown keys in `metadata`.
 - `confidence_score` MUST be between 0.0 and 1.0 inclusive.
 - Low confidence (< 0.7) SHOULD result in `decision: "escalate"`.
 
-## 3. The Gavel Integration
+## 3. The Sentry Integration
 
-The Gavel (ACL's reference policy engine) uses this TypeScript interface:
+The Sentry (ACL's reference policy engine) uses this TypeScript interface:
 
 ```typescript
 type PolicyDecision = "allow" | "deny" | "escalate";
@@ -132,7 +132,7 @@ interface PolicyEvaluation {
 }
 ```
 
-The Gavel determines `decision` based on:
+The Sentry determines `decision` based on:
 
 1. **Clear violation detected** → `decision: "deny"`
 2. **No violations, high confidence (≥ 0.7)** → `decision: "allow"`
@@ -199,7 +199,7 @@ PVS verdicts are designed to embed directly inside ADP-1 steps as `observation.o
       "policy_violations": ["No PII"],
       "confidence_score": 0.98,
       "policy_set": ["No PII", "No financial advice"],
-      "metadata": {"engine": "the-gavel", "latency_ms": 650}
+      "metadata": {"engine": "the-sentry", "latency_ms": 650}
     }
   }
 }

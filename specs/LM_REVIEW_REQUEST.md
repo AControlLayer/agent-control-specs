@@ -11,7 +11,7 @@ You are reviewing the **Agent Control Layer (ACL)** codebase and its emerging st
 
 - **Agent identity** (AIP-1, X.509-based)
 - **Agent work traces** (ADP-1, “Universal Adapter”)
-- **Policy verdicts** (PVS-1, The Gavel)
+- **Policy verdicts** (PVS-1, The Sentry)
 - **Capability & Trust Context** (CTX-1, mapping to AIP/ADP)
 
 The goal is to:
@@ -28,7 +28,7 @@ Please read these, in roughly this order:
 
 1. `docs/specs/AIP-1.md` — Agent Identity Protocol (cryptographic identity, X.509 extensions).
 2. `docs/specs/ADP-1.md` — Agent Data Protocol (Universal Adapter for Agent Work).
-3. `docs/specs/PVS-1.md` — Policy Verdict Schema (The Gavel’s output format).
+3. `docs/specs/PVS-1.md` — Policy Verdict Schema (The Sentry’s output format).
 4. `docs/specs/CTX-1.md` — Capability & Trust Context (standard capability strings).
 
 Helpful supporting docs:
@@ -36,8 +36,8 @@ Helpful supporting docs:
 - `docs/DEEP_MOAT_LAUNCH_KIT.md` — Product/marketing view of “Deep Moat”.
 - `docs/RFC_ANNOUNCEMENT.md` — AIP-1 announcement and motivation.
 - `docs/TECHNICAL_FEATURES.md` — High-level technical positioning.
-- `lib/workflows/agent-executor.ts` — Core agent execution pipeline (Shadow Mode, The Gavel, identity issuance).
-- `lib/agents/the-gavel.ts` — Policy engine implementation.
+- `lib/workflows/agent-executor.ts` — Core agent execution pipeline (Shadow Mode, The Sentry, identity issuance).
+- `lib/agents/the-sentry.ts` — Policy engine implementation.
 - `lib/security/identity/ca.ts`, `lib/security/identity/verifier.ts` — AIP reference implementation (cert issuing & verification).
 - `lib/security/audit/audit-log-immutability.ts` — Tamper-evident audit log chain.
 
@@ -88,12 +88,12 @@ Questions:
    - Would you be able to emit ADP-1 without ugly hacks?
    - Where would you hit friction, and how would you adjust the spec to reduce it (while keeping it simple)?
 
-### 3) PVS-1 – Policy Verdict Schema (The Gavel)
+### 3) PVS-1 – Policy Verdict Schema (The Sentry)
 
 Files:
 
 - `docs/specs/PVS-1.md`
-- `lib/agents/the-gavel.ts`
+- `lib/agents/the-sentry.ts`
 
 Questions:
 

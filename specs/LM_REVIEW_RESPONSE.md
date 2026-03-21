@@ -159,7 +159,7 @@ Add to Section 2.1:
 
 1. **Simple and actionable**: The `approved` boolean makes enforcement trivial. No ambiguity.
 2. **Human-readable reasoning**: The `reasoning` field enables audit and explanation without requiring policy expertise.
-3. **Fail-closed default**: The Gavel implementation correctly rejects on error - security-first design.
+3. **Fail-closed default**: The Sentry implementation correctly rejects on error - security-first design.
 4. **Clean embedding in ADP-1**: Verdicts fit naturally as `observation.output` in policy_judge steps.
 
 ### Gaps / Risks
@@ -309,7 +309,7 @@ The following should be **explicitly marked as "Not in v1, Roadmap for v2"** to 
 
 2. **Full mTLS between agents**: AIP currently enables verification, but actual mTLS handshakes between agents require significant infrastructure (service mesh, cert distribution).
 
-3. **Global Policy Language**: A declarative DSL for policies (like OPA/Rego). The Gavel's natural language approach is sufficient for v1.
+3. **Global Policy Language**: A declarative DSL for policies (like OPA/Rego). The Sentry's natural language approach is sufficient for v1.
 
 4. **Capability Bundles / Roles**: `role:analyst` expanding to multiple `perm:*` capabilities. Keep it flat for v1.
 
@@ -321,16 +321,16 @@ The following should be **explicitly marked as "Not in v1, Roadmap for v2"** to 
 
 ### Implementation Alignment Check
 
-Reviewing `ca.ts`, `verifier.ts`, `the-gavel.ts`, and `agent-executor.ts`:
+Reviewing `ca.ts`, `verifier.ts`, `the-sentry.ts`, and `agent-executor.ts`:
 
 **Good alignment:**
 - Certificate issuance follows AIP-1 profile
 - Fingerprint calculation is consistent
-- The Gavel output matches PVS-1 structure (minus `version` field)
+- The Sentry output matches PVS-1 structure (minus `version` field)
 - Capability-Set encoding follows CTX-1 conventions
 
 **Gaps to address:**
-1. The Gavel should add `version: "pvs-1"` to its output (trivial fix)
+1. The Sentry should add `version: "pvs-1"` to its output (trivial fix)
 2. `verifyAgentIdentity` doesn't extract/validate AIP extension OIDs - it only checks signature and extracts CN
 3. `agent-executor.ts` doesn't emit full ADP-1 `AgentRun` records yet - it logs individual executions but not the structured format
 

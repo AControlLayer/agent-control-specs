@@ -28,7 +28,7 @@ flowchart TB
     end
 
     subgraph Policy ["Policy Layer"]
-        GAVEL["The Gavel\n(Policy Engine)"]
+        SENTRY["The Sentry\n(Policy Engine)"]
         PVS["PVS-1\nPolicy Verdicts"]
     end
 
@@ -45,9 +45,9 @@ flowchart TB
     AIP -->|"Anchored to"| BC
     CTX -->|"Capability strings"| AIP
     AIP -->|"Identifies"| AGENT
-    AGENT -->|"Actions evaluated"| GAVEL
-    GAVEL -->|"Produces"| PVS
-    CTX -->|"Capability checks"| GAVEL
+    AGENT -->|"Actions evaluated"| SENTRY
+    SENTRY -->|"Produces"| PVS
+    CTX -->|"Capability checks"| SENTRY
     AIP -->|"cert_fingerprint"| ADP
     AGENT -->|"Work recorded"| ADP
     PVS -->|"Embedded in"| ADP
@@ -61,7 +61,7 @@ flowchart TB
 
     class AIP,CA,BC identity
     class CTX caps
-    class GAVEL,PVS policy
+    class SENTRY,PVS policy
     class ADP,AUDIT data
     class AGENT runtime
 ```
@@ -71,7 +71,7 @@ flowchart TB
 1. **Identity Issuance**: CA issues short-lived X.509 certificates per AIP-1, embedding CTX-1 capability strings
 2. **Blockchain Anchoring**: Root CA fingerprint anchored to Ethereum for trustless verification
 3. **Agent Authorization**: Agents present certificates for mTLS; verifiers check capabilities
-4. **Policy Evaluation**: The Gavel evaluates actions against policies, producing PVS-1 verdicts
+4. **Policy Evaluation**: The Sentry evaluates actions against policies, producing PVS-1 verdicts
 5. **Audit Recording**: Agent work recorded via ADP-1, including AIP linkage and policy verdicts
 
 ## Quickstart

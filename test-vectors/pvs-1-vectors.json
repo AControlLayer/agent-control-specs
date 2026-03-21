@@ -14,7 +14,7 @@
         "confidence_score": 0.99,
         "policy_set": ["Policy A", "Policy B"],
         "metadata": {
-          "engine": "the-gavel",
+          "engine": "the-sentry",
           "latency_ms": 100
         }
       }
