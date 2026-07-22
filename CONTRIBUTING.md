@@ -56,6 +56,19 @@ When opening an issue, please include:
 4. **Test** any JSON schema changes against the test vectors
 5. **Submit a Pull Request** with a clear description
 
+Normative AIP-1 and CTX-1 constants are authored once in `contracts/`. Do not
+hand-edit sections delimited by `spec-contract:*` comments. After changing a
+machine contract, regenerate those projections and run the local CI equivalent:
+
+```bash
+npm run write:contract-docs
+npm run check
+npm ci --prefix site
+npm test --prefix site
+npm run build --prefix site
+npm pack --dry-run --json
+```
+
 ---
 
 ## Specification Change Process
@@ -175,6 +188,12 @@ All specifications MUST follow the structure defined in [SPEC-0](specs/SPEC-0.md
 - [ ] Passes schema validation (if applicable)
 - [ ] Includes test vectors for new features
 - [ ] Has clear commit messages
+
+The `spec-contracts-required` GitHub Actions check validates the package,
+contract-backed documentation, schemas, examples, test vectors, public site
+build, and publishable package contents. Repository operators MUST add this
+check to the `main` branch ruleset after the workflow merges; a workflow name
+alone does not make a check required.
 
 ### Review Timeline
 

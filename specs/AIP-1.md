@@ -83,22 +83,26 @@ We define the `1.3.6.1.4.1.59999` (Private Enterprise Number - Placeholder for A
 > **Note on IANA Assignment:**
 > The OID arc `59999` is currently used for RFC/Draft purposes. A dedicated Private Enterprise Number (PEN) will be assigned by IANA for the v1.0 release.
 
-| OID                     | Name                 | Data Type    | Description                                                                    |
-| :---------------------- | :------------------- | :----------- | :----------------------------------------------------------------------------- |
-| `1.3.6.1.4.1.59999.1.1` | **AIP-Version**      | `INTEGER`    | Protocol version (e.g., `1`).                                                  |
-| `1.3.6.1.4.1.59999.1.2` | **Agent-Role**       | `UTF8String` | Semantic role (e.g., `researcher`, `market-maker`).                            |
-| `1.3.6.1.4.1.59999.1.3` | **Tenant-ID**        | `UTF8String` | The UUID of the owner/tenant (`tenant_id`).                                    |
-| `1.3.6.1.4.1.59999.1.4` | **Capability-Set**   | `IA5String`  | JSON array of approved capabilities (e.g., `["read_email", "execute_trade"]`). |
-| `1.3.6.1.4.1.59999.1.5` | **Anchor-Chain**     | `UTF8String` | Blockchain used for Root Trust (e.g., `ethereum:sepolia`).                     |
-| `1.3.6.1.4.1.59999.1.6` | **AIP-Audience**     | `UTF8String` | Intended verifier / audience (e.g., `api.acme.com`).                           |
-| `1.3.6.1.4.1.59999.1.7` | **AIP-Environment**  | `UTF8String` | Deployment environment (`production`, `staging`, `development`, etc.).         |
+<!-- spec-contract:aip-1-extensions:start -->
+| OID | Name | Data Type | Description | Value Rule |
+| :--- | :--- | :--- | :--- | :--- |
+| `1.3.6.1.4.1.59999.1.1` | **AIP-Version** | `INTEGER` | Protocol version (e.g., `1`). | MUST equal the AIP protocol version 1. |
+| `1.3.6.1.4.1.59999.1.2` | **Agent-Role** | `UTF8String` | Semantic role (e.g., `researcher`, `market-maker`). | MUST be a non-empty semantic role name. |
+| `1.3.6.1.4.1.59999.1.3` | **Tenant-ID** | `UTF8String` | The UUID of the owner/tenant (`tenant_id`). | MUST be a canonical UUID tenant identifier. |
+| `1.3.6.1.4.1.59999.1.4` | **Capability-Set** | `IA5String` | JSON array of approved capabilities (e.g., `["perm:files:read", "agent:trade:execute"]`). | MUST be a JSON array of unique CTX-1-conformant capability strings; unknown prefixes remain valid and are ignored by consumers that do not understand them. |
+| `1.3.6.1.4.1.59999.1.5` | **Anchor-Chain** | `UTF8String` | Blockchain used for Root Trust (e.g., `ethereum:sepolia`). | MUST be a non-empty trust-anchor chain identifier. |
+| `1.3.6.1.4.1.59999.1.6` | **AIP-Audience** | `UTF8String` | Intended verifier / audience (e.g., `api.acme.com`). | MUST be a non-empty intended verifier identifier. |
+| `1.3.6.1.4.1.59999.1.7` | **AIP-Environment** | `UTF8String` | Deployment environment (`production`, `staging`, `development`, etc.). | MUST be a non-empty deployment environment name. |
+<!-- spec-contract:aip-1-extensions:end -->
 
 #### 3.1.3 Validity Period
 
+<!-- spec-contract:aip-1-lifetime:start -->
 - **Maximum Validity**: 15 minutes.
 - **RECOMMENDED Validity**: 5 minutes.
-- **Reasoning**: Short-lived certificates render revocation lists (CRLs) largely unnecessary, significantly reducing infrastructure complexity ("Blast Radius Reduction").
 - **Clock Skew Tolerance**: Issuers SHOULD backdate the `notBefore` time by 1–2 minutes to account for clock skew. Verifiers SHOULD allow a grace period of ±60 seconds when enforcing validity, and all participating systems MUST synchronize to NTP with drift <30 seconds.
+<!-- spec-contract:aip-1-lifetime:end -->
+- **Reasoning**: Short-lived certificates render revocation lists (CRLs) largely unnecessary, significantly reducing infrastructure complexity ("Blast Radius Reduction").
 
 #### 3.1.4 Environment and Audience
 
@@ -182,22 +186,24 @@ AIP is designed to mitigate the following threats:
 
 ### 7.1 Conformance Levels
 
+<!-- spec-contract:aip-1-conformance:start -->
 **Level 1 (Core)**: An implementation MUST:
 - Issue X.509 v3 certificates with validity ≤ 15 minutes
-- Include AIP-Version (OID .1.1) in all certificates
-- Include Tenant-ID (OID .1.3) in all certificates
-- Include Capability-Set (OID .1.4) in all certificates
+- Include AIP-Version (OID `1.3.6.1.4.1.59999.1.1`) in all certificates
+- Include Tenant-ID (OID `1.3.6.1.4.1.59999.1.3`) in all certificates
+- Include Capability-Set (OID `1.3.6.1.4.1.59999.1.4`) in all certificates
 - Validate certificate signatures and expiration
 
 **Level 2 (Extended)**: An implementation MUST also:
-- Include AIP-Environment (OID .1.7) and validate environment matching
-- Include AIP-Audience (OID .1.6) when certificates are scoped
+- Include AIP-Environment (OID `1.3.6.1.4.1.59999.1.7`) in all certificates and validate environment matching
+- Include AIP-Audience (OID `1.3.6.1.4.1.59999.1.6`) when certificates are scoped
 - Support NTP synchronization with <30 second drift
 
 **Level 3 (Complete)**: An implementation MUST also:
 - Anchor Root CA to blockchain
 - Support on-chain verification of Root CA fingerprint
 - Implement full CTX-1 capability vocabulary
+<!-- spec-contract:aip-1-conformance:end -->
 
 ### 7.2 Conformance Statement
 

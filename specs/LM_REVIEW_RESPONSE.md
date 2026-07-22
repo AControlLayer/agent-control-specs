@@ -39,11 +39,11 @@ The biggest risk I see is **scope creep before launch**. The specs are deliberat
 
 ### Concrete Recommendations
 
-**1. Add `AIP-Audience` extension (OID `.6`):**
+**1. Add `AIP-Audience` extension (allocated suffix `.6`):**
 
 ```
-| OID                     | Name           | Data Type    | Description                                    |
-| 1.3.6.1.4.1.59999.1.6   | AIP-Audience   | UTF8String   | Intended verifier service/domain (e.g., "api.acme.com") |
+| OID source | Name | Data Type | Description |
+| AIP OID base + allocated suffix `.6` | AIP-Audience | UTF8String | Intended verifier service/domain (e.g., "api.acme.com") |
 ```
 
 Implementation in `ca.ts`:
@@ -56,11 +56,11 @@ if (metadata?.audience) {
 }
 ```
 
-**2. Add `AIP-Environment` extension (OID `.7`):**
+**2. Add `AIP-Environment` extension (allocated suffix `.7`):**
 
 ```
-| OID                     | Name              | Data Type    | Description                                |
-| 1.3.6.1.4.1.59999.1.7   | AIP-Environment   | UTF8String   | Deployment environment ("production", "staging", "development") |
+| OID source | Name | Data Type | Description |
+| AIP OID base + allocated suffix `.7` | AIP-Environment | UTF8String | Deployment environment ("production", "staging", "development") |
 ```
 
 This is cheap to add now and prevents cross-environment confusion.

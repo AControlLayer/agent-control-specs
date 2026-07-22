@@ -1,0 +1,35 @@
+{
+  "contractVersion": 1,
+  "specifications": [
+    {
+      "id": "SPEC-0",
+      "title": "Specification Process",
+      "narrativePath": "specs/SPEC-0.md",
+      "machineExport": "@acontrollayer/spec-contracts/registry"
+    },
+    {
+      "id": "AIP-1",
+      "title": "Agent Identity Protocol",
+      "narrativePath": "specs/AIP-1.md",
+      "machineExport": "@acontrollayer/spec-contracts/aip-1"
+    },
+    {
+      "id": "ADP-1",
+      "title": "Agent Data Protocol",
+      "narrativePath": "specs/ADP-1.md",
+      "machineExport": "@acontrollayer/spec-contracts/schemas/adp-1"
+    },
+    {
+      "id": "PVS-1",
+      "title": "Policy Verdict Schema",
+      "narrativePath": "specs/PVS-1.md",
+      "machineExport": "@acontrollayer/spec-contracts/schemas/pvs-1"
+    },
+    {
+      "id": "CTX-1",
+      "title": "Capability & Trust eXtensions",
+      "narrativePath": "specs/CTX-1.md",
+      "machineExport": "@acontrollayer/spec-contracts/ctx-1"
+    }
+  ]
+}

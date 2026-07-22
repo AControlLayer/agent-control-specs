@@ -75,68 +75,69 @@ A PVS-1 verdict is a single JSON object with the following fields:
 
 ### 2.1 Required Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `version` | string | MUST be `"pvs-1"` for this spec |
-| `decision` | string | One of `"allow"`, `"deny"`, or `"escalate"` |
-| `approved` | boolean | `true` if `decision` is `"allow"`, `false` otherwise. Retained for backwards compatibility |
-| `reasoning` | string | Human-readable explanation of the decision |
-| `policy_violations` | array | Policy descriptions that were violated (empty if decision is "allow") |
-| `confidence_score` | number | Engine confidence in verdict (0.0 to 1.0) |
+<!-- spec-contract:pvs-1-required-fields:start -->
+| Field | Type | Presence | Schema description |
+|---|---|---|---|
+| `version` | string | required | Schema version identifier |
+| `decision` | string | required | Policy decision: allow execution, deny execution, or escalate for human review |
+| `approved` | boolean | required | True if content is allowed to proceed, false otherwise |
+| `reasoning` | string | required | Human-readable explanation of the decision |
+| `policy_violations` | array | required | Array of violated policy descriptions. Empty if approved is true. |
+| `confidence_score` | number | required | Engine confidence in the verdict (0.0 to 1.0) |
+| `policy_set` | array | optional | Array of policy names that were evaluated |
+| `metadata` | object | optional | Engine-specific metadata |
 
-#### Decision Values
-
-- `"allow"` — Content passes policy evaluation; proceed with execution
-- `"deny"` — Content violates policy; block execution
-- `"escalate"` — Engine is uncertain or policy requires human review
-
-### 2.2 Optional Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `policy_set` | array | Policy names evaluated |
-| `metadata` | object | Engine-specific metadata |
+**Decision values:**
+- `allow`
+- `deny`
+- `escalate`
 
 Consumers MUST ignore unknown keys in `metadata`.
+<!-- spec-contract:pvs-1-required-fields:end -->
 
 ### 2.3 Constraints
 
-- When `decision` is `"allow"`, `policy_violations` MUST be an empty array.
-- When `decision` is `"allow"`, `approved` MUST be `true`.
-- When `decision` is `"deny"` or `"escalate"`, `approved` MUST be `false`.
-- `confidence_score` MUST be between 0.0 and 1.0 inclusive.
-- Low confidence (< 0.7) SHOULD result in `decision: "escalate"`.
+<!-- spec-contract:pvs-1-constraints:start -->
+- When `decision` is `allow`, `approved` MUST be `true` and `policy_violations` MUST be empty.
+- When `decision` is `deny` or `escalate`, `approved` MUST be `false`.
+- `confidence_score` MUST be between 0 and 1 inclusive.
+- Confidence below 0.9 SHOULD result in `decision: "escalate"`.
+<!-- spec-contract:pvs-1-constraints:end -->
 
 ## 3. The Sentry Integration
 
 The Sentry (ACL's reference policy engine) uses this TypeScript interface:
 
+<!-- spec-contract:pvs-1-typescript-interface:start -->
 ```typescript
 type PolicyDecision = "allow" | "deny" | "escalate";
 
 interface PolicyEvaluation {
-  version: string;
+  version: "pvs-1";
   decision: PolicyDecision;
-  approved: boolean;  // Derived: true if decision === "allow"
+  approved: boolean;
   reasoning: string;
   policy_violations: string[];
   confidence_score: number;
   policy_set?: string[];
   metadata?: {
-    engine: string;
-    engine_version: string;
-    latency_ms: number;
+    engine?: string;
+    engine_version?: string;
+    latency_ms?: number;
     tenant_id?: string;
     agent_id?: string;
   };
 }
 ```
+<!-- spec-contract:pvs-1-typescript-interface:end -->
 
 The Sentry determines `decision` based on:
 
+<!-- spec-contract:pvs-1-decision-rules:start -->
 1. **Clear violation detected** → `decision: "deny"`
-2. **No violations, high confidence (≥ 0.7)** → `decision: "allow"`
-3. **Uncertain or low confidence (< 0.7)** → `decision: "escalate"`
+2. **No violations, confidence ≥ 0.9** → `decision: "allow"`
+3. **Uncertain or confidence < 0.9** → `decision: "escalate"`
+<!-- spec-contract:pvs-1-decision-rules:end -->
 
 To produce PVS-1 compliant output, policy engines SHOULD:
 
@@ -162,12 +163,14 @@ Content → Policy Engine → PVS-1 Verdict
                     Human Reviewer → Approve/Reject
 ```
 
+<!-- spec-contract:pvs-1-escalation-triggers:start -->
 **Recommended escalation triggers:**
-- Low confidence score (< 0.7)
+- Confidence score below 0.9
 - Ambiguous policy match
 - High-stakes operation (configured per use case)
 - Explicit policy requiring human review
 - System uncertainty or error conditions
+<!-- spec-contract:pvs-1-escalation-triggers:end -->
 
 Platforms implementing PVS-1 SHOULD:
 1. Pause execution when `decision === "escalate"`
@@ -231,28 +234,32 @@ This enables downstream systems to:
 ### 5.3 Confidence Thresholds
 
 Implementations SHOULD define confidence thresholds:
-- `confidence_score >= 0.9`: Auto-enforce verdict
-- `confidence_score < 0.9`: Queue for human review
+<!-- spec-contract:pvs-1-security-threshold:start -->
+- `confidence_score >= 0.9`: the policy decision MAY be auto-enforced.
+- `confidence_score < 0.9`: the verdict SHOULD be queued for human review.
+<!-- spec-contract:pvs-1-security-threshold:end -->
 
 ## 6. Conformance
 
 ### 6.1 Conformance Levels
 
+<!-- spec-contract:pvs-1-conformance:start -->
 **Level 1 (Core)**: An implementation MUST:
-- Emit valid JSON conforming to PVS-1 schema
-- Include all required fields
-- Enforce the approved/policy_violations constraint
-- Use valid confidence_score range
+- Emit valid JSON conforming to this schema
+- Include all schema-required fields
+- Enforce decision, approved, and policy_violations consistency
+- Use the schema-defined confidence_score range
 
 **Level 2 (Extended)**: An implementation MUST also:
-- Include `policy_set` with evaluated policies
-- Include `metadata.engine` identifying the policy engine
-- Provide meaningful `reasoning` text
+- Include policy_set with evaluated policies
+- Include metadata.engine identifying the policy engine
+- Provide meaningful reasoning text
 
 **Level 3 (Complete)**: An implementation MUST also:
-- Include `metadata.latency_ms` for performance monitoring
+- Include metadata.latency_ms for performance monitoring
 - Support verdict signing for integrity
 - Integrate with ADP-1 step embedding
+<!-- spec-contract:pvs-1-conformance:end -->
 
 ### 6.2 Schema Validation
 

@@ -31,7 +31,7 @@ The primary areas for improvement revolve around **Operational Reality** (dealin
 ### Concrete Recommendations
 
 1.  **Add `Environment` Extension:**
-    -   OID: `1.3.6.1.4.1.59999.1.6` (next available slot).
+    -   OID: allocate the next suffix under the canonical AIP OID base.
     -   Value: `production`, `staging`, `dev`.
     -   _Why:_ Prevents cross-environment accidents at the identity layer.
 2.  **Mitigate Clock Skew:**

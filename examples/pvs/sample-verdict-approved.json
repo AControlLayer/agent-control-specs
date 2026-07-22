@@ -1,5 +1,6 @@
 {
   "version": "pvs-1",
+  "decision": "allow",
   "approved": true,
   "reasoning": "Content complies with all evaluated policies. No PII detected, tone is professional, and no financial advice is present.",
   "policy_violations": [],

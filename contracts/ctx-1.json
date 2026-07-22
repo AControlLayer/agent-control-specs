@@ -1,0 +1,59 @@
+{
+  "id": "CTX-1",
+  "grammar": {
+    "separator": ":",
+    "minimumSegments": 2,
+    "segmentCharacters": {
+      "lowercaseAsciiLetters": true,
+      "digits": true,
+      "symbols": ["-", "_"]
+    },
+    "recommendedMaximumLength": 256,
+    "namesShouldBeStable": true,
+    "unknownCapabilities": "ignore",
+    "prefixMayContainSeparator": false
+  },
+  "reservedPrefixes": [
+    {
+      "prefix": "agent",
+      "purpose": "Identifies a logical agent",
+      "examples": ["agent:coach", "agent:analyst"]
+    },
+    {
+      "prefix": "tenant",
+      "purpose": "Identifies a tenant/organization",
+      "examples": ["tenant:tenant-123"]
+    },
+    {
+      "prefix": "service_account",
+      "purpose": "Identifies a backing service account",
+      "examples": ["service_account:svc-xyz"]
+    },
+    {
+      "prefix": "perm",
+      "purpose": "Encodes an RBAC permission",
+      "examples": ["perm:workflows:read", "perm:files:write"]
+    },
+    {
+      "prefix": "budget",
+      "purpose": "Encodes budget constraints",
+      "examples": ["budget:usd:100", "budget:tokens:100000"]
+    },
+    {
+      "prefix": "env",
+      "purpose": "Encodes environment constraints",
+      "examples": ["env:production", "env:staging"]
+    },
+    {
+      "prefix": "role",
+      "purpose": "Encodes a role bundle",
+      "examples": ["role:analyst", "role:admin"]
+    }
+  ],
+  "invalidExamples": [
+    "perm:Workflows:read",
+    "perm:workflows:",
+    "perm",
+    ":workflows:read"
+  ]
+}

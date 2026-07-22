@@ -4,6 +4,7 @@ import addFormats from 'ajv-formats';
 import schema from '../../../schemas/pvs-1.schema.json';
 
 const ajv = new Ajv({ allErrors: true });
+ajv.addKeyword('x-acontrollayer-policy');
 addFormats(ajv);
 const validate = ajv.compile(schema);
 
