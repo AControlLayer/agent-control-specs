@@ -185,19 +185,30 @@ Identity roots are anchored on Ethereum for immutability.
 
 | Resource                       | Description                            |
 | ------------------------------ | -------------------------------------- |
-| [schemas/](schemas/)           | JSON Schema definitions (ADP-1, PVS-1) |
-| [examples/](examples/)         | Sample payloads and certificates       |
-| [test-vectors/](test-vectors/) | Validation test cases                  |
+| [schemas/](schemas/)           | JSON Schema definitions (ADP-1, PVS-1)            |
+| [types/](types/)               | Generated TypeScript types for all four contracts |
+| [examples/](examples/)         | Sample payloads and certificates                  |
+| [test-vectors/](test-vectors/) | Validation test cases                             |
 
-The same canonical contracts are published as the data-only
+The same canonical contracts are published in the
 `@acontrollayer/spec-contracts` package. It exports the specification registry,
 AIP-1 extension constants, CTX-1 grammar and reserved prefixes, and the ADP-1
-and PVS-1 JSON Schemas:
+and PVS-1 JSON Schemas. Its TypeScript declarations are generated from those
+four machine contracts and exported from the `types` subpath:
 
 ```js
 import aip from '@acontrollayer/spec-contracts/aip-1' with { type: 'json' };
 import ctx from '@acontrollayer/spec-contracts/ctx-1' with { type: 'json' };
 import pvsSchema from '@acontrollayer/spec-contracts/schemas/pvs-1' with { type: 'json' };
+```
+
+```ts
+import type {
+  Adp1AgentRun,
+  Aip1Contract,
+  Ctx1Contract,
+  Pvs1PolicyVerdict,
+} from '@acontrollayer/spec-contracts/types';
 ```
 
 ---

@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Data-only `@acontrollayer/spec-contracts` package with canonical registry,
+- `@acontrollayer/spec-contracts` package with canonical registry,
   AIP-1, CTX-1, ADP-1, and PVS-1 machine exports
+- Deterministically generated TypeScript types for all four machine contracts,
+  exported from `@acontrollayer/spec-contracts/types`
 - Contract-backed freshness checks for normative AIP-1 and CTX-1 tables
 - Deterministic documentation write path and required CI check covering package,
   site, schema, example, vector, build, and package-content validation

@@ -11,7 +11,7 @@ test("root package exposes the public machine contracts without lifecycle script
 
   assert.equal(packageJson.name, "@acontrollayer/spec-contracts");
   assert.equal(packageJson.type, "module");
-  assert.deepEqual(packageJson.files, ["contracts", "schemas", "examples"]);
+  assert.deepEqual(packageJson.files, ["contracts", "schemas", "types", "examples"]);
 
   for (const lifecycleScript of [
     "preinstall",
@@ -34,5 +34,10 @@ test("root package exposes the public machine contracts without lifecycle script
     "./registry",
     "./schemas/adp-1",
     "./schemas/pvs-1",
+    "./types",
   ]);
+
+  assert.deepEqual(packageJson.exports["./types"], {
+    types: "./types/index.d.ts",
+  });
 });
