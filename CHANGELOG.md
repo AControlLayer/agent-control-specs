@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `@acontrollayer/spec-contracts` package with canonical registry,
+  AIP-1, CTX-1, ADP-1, and PVS-1 machine exports
+- Deterministically generated TypeScript types for all four machine contracts,
+  exported from `@acontrollayer/spec-contracts/types`
+- Contract-backed freshness checks for normative AIP-1 and CTX-1 tables
+- Deterministic documentation write path and required CI check covering package,
+  site, schema, example, vector, build, and package-content validation
+
+### Fixed
+
+- PVS-1 JSON Schema and examples now enforce the documented required
+  `allow | deny | escalate` decision vocabulary and its `approved` projection
+- Public validators now derive AIP-1 and CTX-1 values from the machine contracts
+  instead of maintaining independent copies
+- Retired the obsolete validator implementation guide and tracked site build
+  projections that could drift from their authored sources
+
 ---
 
 ## [1.2.0] - 2026-03-20

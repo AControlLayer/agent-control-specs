@@ -1,0 +1,36 @@
+{
+  "name": "@acontrollayer/spec-contracts",
+  "version": "1.2.0",
+  "description": "Canonical machine-readable contracts for the AControlLayer public specifications",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "contracts",
+    "schemas",
+    "types",
+    "examples"
+  ],
+  "exports": {
+    ".": "./contracts/registry.json",
+    "./registry": "./contracts/registry.json",
+    "./aip-1": "./contracts/aip-1.json",
+    "./ctx-1": "./contracts/ctx-1.json",
+    "./schemas/adp-1": "./schemas/adp-1.schema.json",
+    "./schemas/pvs-1": "./schemas/pvs-1.schema.json",
+    "./types": {
+      "types": "./types/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "generate:types": "node scripts/generate-types.mjs",
+    "check:types": "node scripts/generate-types.mjs --check",
+    "check:contract-docs": "node scripts/check-contract-docs.mjs",
+    "write:contract-docs": "node scripts/check-contract-docs.mjs --write",
+    "check": "node --test tests/*.test.mjs && node scripts/check-contract-docs.mjs && node scripts/generate-types.mjs --check"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -22,7 +22,7 @@ This document provides information for the Agent Control Layer community. It doe
 
 The Capability & Trust eXtensions (CTX-1) defines a common vocabulary and naming convention for **capability strings** used in:
 
-- AIP-1 `Capability-Set` X.509 extension (`1.3.6.1.4.1.59999.1.4`)
+- AIP-1 `Capability-Set` X.509 extension
 - ADP-1 `agent.aip.capabilities`
 
 Its goals are:
@@ -56,9 +56,10 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## 2. Naming Convention
 
+<!-- spec-contract:ctx-1-grammar:start -->
 Capabilities are simple strings with the following pattern:
 
-```
+```text
 <prefix>:<name>[:<qualifier>...]
 ```
 
@@ -67,21 +68,24 @@ Capabilities are simple strings with the following pattern:
 - `tenant:tenant-123`
 - `service_account:svc-xyz`
 - `perm:workflows:read`
-- `perm:inputs:write`
 - `budget:usd:100`
+- `env:production`
+- `role:analyst`
 
 **Rules:**
 
-1. Names MUST contain only lowercase ASCII letters, digits, `-`, or `_`
+1. Segments MUST contain only lowercase ASCII letters, digits, `-`, or `_`
 2. Names SHOULD be stable over time; when behavior changes significantly, prefer a new capability name
 3. Unknown capabilities MUST be ignored (fail-safe) by consumers who do not understand them
-4. Prefixes MUST NOT contain colons
+4. Prefixes MUST NOT contain the `:` separator
 5. The total string length SHOULD NOT exceed 256 characters
+<!-- spec-contract:ctx-1-grammar:end -->
 
 ## 3. Reserved Prefixes
 
 The following prefixes are reserved and SHOULD be interpreted consistently:
 
+<!-- spec-contract:ctx-1-reserved-prefixes:start -->
 | Prefix | Purpose | Examples |
 |--------|---------|----------|
 | `agent:` | Identifies a logical agent | `agent:coach`, `agent:analyst` |
@@ -91,6 +95,7 @@ The following prefixes are reserved and SHOULD be interpreted consistently:
 | `budget:` | Encodes budget constraints | `budget:usd:100`, `budget:tokens:100000` |
 | `env:` | Encodes environment constraints | `env:production`, `env:staging` |
 | `role:` | Encodes a role bundle | `role:analyst`, `role:admin` |
+<!-- spec-contract:ctx-1-reserved-prefixes:end -->
 
 Other prefixes MAY be defined by implementations as long as they do not conflict with the above.
 

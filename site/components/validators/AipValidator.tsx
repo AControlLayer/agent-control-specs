@@ -1,18 +1,40 @@
 import React, { useState } from 'react';
-import { X509CertificateGenerator, Extension } from '@peculiar/x509';
-import { validateAip, AIP_OIDS, CheckResult } from '../../lib/validators/aip';
+import {
+  BasicConstraintsExtension,
+  cryptoProvider,
+  Extension,
+  KeyUsageFlags,
+  KeyUsagesExtension,
+  X509CertificateGenerator,
+} from '@peculiar/x509';
+import aipContract from '../../../contracts/aip-1.json';
+import ctxContract from '../../../contracts/ctx-1.json';
+import { validateAip, CheckResult } from '../../lib/validators/aip';
+import { encodeAipExtensionValue } from '../../lib/validators/aip-extension-values.mjs';
 
+const coreConformance = aipContract.conformance.levels.find(
+  ({ level }) => level === 1,
+);
+if (!coreConformance) {
+  throw new Error('AIP-1 contract must define Level 1 conformance');
+}
+const aipExtensionByConstant = Object.fromEntries(
+  aipContract.extensions.map((extension) => [extension.constant, extension]),
+);
+const extensionOid = (extension: { suffix: number }) =>
+  `${aipContract.oidBase}.${extension.suffix}`;
 
 export const AipValidator = () => {
   const [input, setInput] = useState('');
+  const [issuerChain, setIssuerChain] = useState('');
   const [results, setResults] = useState<{valid: boolean; checks: CheckResult[]} | null>(null);
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
     if (!input.trim()) {
       setResults(null);
       return;
     }
-    const res = validateAip(input);
+    const res = await validateAip(input, issuerChain);
     setResults(res);
   };
 
@@ -23,35 +45,56 @@ export const AipValidator = () => {
         return;
       }
       const crypto = window.crypto;
+      cryptoProvider.set(crypto);
       const alg = { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256", publicExponent: new Uint8Array([1, 0, 1]), modulusLength: 2048 };
-      const keys = await crypto.subtle.generateKey(alg, true, ["sign", "verify"]);
-      
-      const cert = await X509CertificateGenerator.create({
+      const issuerKeys = await crypto.subtle.generateKey(alg, true, ["sign", "verify"]);
+      const leafKeys = await crypto.subtle.generateKey(alg, true, ["sign", "verify"]);
+      const notBefore = new Date(
+        Date.now() -
+          aipContract.certificateLifetime.issuerBackdateMinutes.minimum * 60 * 1000,
+      );
+      const notAfter = new Date(
+        notBefore.getTime() +
+          aipContract.certificateLifetime.recommendedMinutes * 60 * 1000,
+      );
+
+      const issuer = await X509CertificateGenerator.createSelfSigned({
         serialNumber: "1",
-        subject: "CN=Test Agent",
-        issuer: "CN=Test Root",
-        notBefore: new Date(),
-        notAfter: new Date(Date.now() + 1000 * 60 * 15), // 15 mins
+        name: "CN=AIP Test Issuer",
+        notBefore: new Date(Date.now() - 60_000),
+        notAfter: new Date(Date.now() + 60 * 60 * 1000),
         signingAlgorithm: alg,
-        publicKey: keys.publicKey,
-        signingKey: keys.privateKey,
+        keys: issuerKeys,
         extensions: [
-            new Extension(AIP_OIDS.VERSION, false, new TextEncoder().encode("1.0").buffer),
-            new Extension(AIP_OIDS.TENANT_ID, false, new TextEncoder().encode("tenant-demo").buffer),
-            new Extension(AIP_OIDS.CAPABILITIES, false, new TextEncoder().encode("demo:gen").buffer)
-        ]
+          new BasicConstraintsExtension(true, undefined, true),
+          new KeyUsagesExtension(KeyUsageFlags.keyCertSign, true),
+        ],
+      });
+      const cert = await X509CertificateGenerator.create({
+        serialNumber: "2",
+        subject: "CN=Test Agent",
+        issuer: issuer.subject,
+        notBefore,
+        notAfter,
+        signingAlgorithm: alg,
+        publicKey: leafKeys.publicKey,
+        signingKey: issuerKeys.privateKey,
+        extensions: coreConformance.requiredExtensions.map((constant) => {
+          const extension = aipExtensionByConstant[constant];
+          return new Extension(
+            extensionOid(extension),
+            false,
+            encodeAipExtensionValue(extension, extension.example, ctxContract),
+          );
+        }),
       });
       
       setInput(cert.toString('pem'));
+      setIssuerChain(issuer.toString('pem'));
       setResults(null); // Clear previous results
     } catch (e: any) {
         alert("Failed to generate certificate: " + e.message);
     }
-  };
-
-  const verifyOnChain = async () => {
-      // Simulation of Sepolia verification
-      alert("Simulating Sepolia check for Root Anchor: 0x9349... \n\n ✓ Anchor Found: Block 4829102\n ✓ Status: Confirmed");
   };
 
   const downloadReport = () => {
@@ -60,6 +103,7 @@ export const AipValidator = () => {
         timestamp: new Date().toISOString(),
         validator: 'AIP-1',
         input: input,
+        issuerChain,
         result: results
     };
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
@@ -87,6 +131,26 @@ export const AipValidator = () => {
         style={{
           width: '100%',
           height: '200px',
+          backgroundColor: '#0F0F0F',
+          color: '#E0E0E0',
+          border: '1px solid #333',
+          padding: '1rem',
+          fontFamily: 'monospace',
+          fontSize: '11px',
+          borderRadius: '4px'
+        }}
+      />
+      <p style={{ fontSize: '0.85rem', color: '#999', marginBottom: '0.4rem' }}>
+        Issuer certificate or chain (PEM). Signature verification is required for Level 1;
+        blockchain/root-anchor trust is a separate Level 3 check and is not performed here.
+      </p>
+      <textarea
+        value={issuerChain}
+        onChange={(e) => setIssuerChain(e.target.value)}
+        placeholder="-----BEGIN CERTIFICATE-----... issuer certificate or chain"
+        style={{
+          width: '100%',
+          height: '140px',
           backgroundColor: '#0F0F0F',
           color: '#E0E0E0',
           border: '1px solid #333',
@@ -126,20 +190,6 @@ export const AipValidator = () => {
         >
           Generate Test Cert
         </button>
-        <button
-          onClick={verifyOnChain}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: 'transparent',
-            color: '#888',
-            border: '1px solid #444',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '13px'
-          }}
-        >
-          Verify on Sepolia
-        </button>
         {results && (
             <button
             onClick={downloadReport}
@@ -162,7 +212,7 @@ export const AipValidator = () => {
       {results && (
         <div style={{ marginTop: '1.5rem' }}>
           <h4 style={{ color: results.valid ? '#D4AF37' : '#FF4444', marginTop: 0 }}>
-            {results.valid ? '✓ Certificate Valid' : '✕ Validation Failed'}
+            {results.valid ? '✓ AIP-1 Level 1 Valid (Anchor Trust Not Evaluated)' : '✕ Validation Failed'}
           </h4>
           <ul style={{ listStyle: 'none', padding: 0, marginTop: '0.5rem' }}>
             {results.checks.map((check, i) => (

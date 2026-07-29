@@ -1,5 +1,6 @@
 {
   "version": "pvs-1",
+  "decision": "deny",
   "approved": false,
   "reasoning": "Draft contained personally identifiable information (SSN pattern detected) which violates the PII policy.",
   "policy_violations": [

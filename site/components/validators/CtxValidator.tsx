@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import ctxContract from '../../../contracts/ctx-1.json';
 import { validateCtx } from '../../lib/validators/ctx';
 
+const exampleCapability = ctxContract.reservedPrefixes[0].examples[0];
+
 export const CtxValidator = () => {
-  const [input, setInput] = useState('perm:files:read');
+  const [input, setInput] = useState(exampleCapability);
   const [result, setResult] = useState<{valid: boolean; message: string} | null>(null);
 
   const handleValidate = () => {
@@ -42,7 +45,7 @@ export const CtxValidator = () => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="e.g., perm:files:read"
+          placeholder={`e.g., ${exampleCapability}`}
           style={{
             width: '100%',
             padding: '1rem',

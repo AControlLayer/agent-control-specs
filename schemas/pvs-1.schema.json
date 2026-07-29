@@ -3,13 +3,57 @@
   "$id": "https://acontrollayer.com/schemas/pvs-1.schema.json",
   "title": "PVS-1 Policy Verdict Schema",
   "description": "JSON Schema for Policy Verdict Schema (PVS-1) records",
+  "x-acontrollayer-policy": {
+    "escalationConfidenceThreshold": 0.9,
+    "additionalEscalationTriggers": [
+      "Ambiguous policy match",
+      "High-stakes operation (configured per use case)",
+      "Explicit policy requiring human review",
+      "System uncertainty or error conditions"
+    ],
+    "conformanceLevels": [
+      {
+        "level": 1,
+        "name": "Core",
+        "requirements": [
+          "Emit valid JSON conforming to this schema",
+          "Include all schema-required fields",
+          "Enforce decision, approved, and policy_violations consistency",
+          "Use the schema-defined confidence_score range"
+        ]
+      },
+      {
+        "level": 2,
+        "name": "Extended",
+        "requirements": [
+          "Include policy_set with evaluated policies",
+          "Include metadata.engine identifying the policy engine",
+          "Provide meaningful reasoning text"
+        ]
+      },
+      {
+        "level": 3,
+        "name": "Complete",
+        "requirements": [
+          "Include metadata.latency_ms for performance monitoring",
+          "Support verdict signing for integrity",
+          "Integrate with ADP-1 step embedding"
+        ]
+      }
+    ]
+  },
   "type": "object",
-  "required": ["version", "approved", "reasoning", "policy_violations", "confidence_score"],
+  "required": ["version", "decision", "approved", "reasoning", "policy_violations", "confidence_score"],
   "properties": {
     "version": {
       "type": "string",
       "const": "pvs-1",
       "description": "Schema version identifier"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["allow", "deny", "escalate"],
+      "description": "Policy decision: allow execution, deny execution, or escalate for human review"
     },
     "approved": {
       "type": "boolean",
@@ -63,19 +107,29 @@
       }
     }
   },
-  "if": {
-    "properties": { "approved": { "const": true } }
-  },
-  "then": {
-    "properties": {
-      "policy_violations": {
-        "maxItems": 0
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision": { "const": "allow" } },
+        "required": ["decision"]
+      },
+      "then": {
+        "properties": {
+          "approved": { "const": true },
+          "policy_violations": { "type": "array", "maxItems": 0 }
+        }
+      },
+      "else": {
+        "properties": {
+          "approved": { "const": false }
+        }
       }
     }
-  },
+  ],
   "examples": [
     {
       "version": "pvs-1",
+      "decision": "allow",
       "approved": true,
       "reasoning": "Content complies with all policies.",
       "policy_violations": [],
@@ -89,6 +143,7 @@
     },
     {
       "version": "pvs-1",
+      "decision": "deny",
       "approved": false,
       "reasoning": "Draft contained direct SSN.",
       "policy_violations": ["No PII leakage"],

@@ -137,7 +137,8 @@ openssl x509 -in agent.crt -text -noout
 openssl verify -CAfile root-ca.crt -untrusted intermediate-ca.crt agent.crt
 
 # Extract AIP OID values (Capability-Set)
-openssl x509 -in agent.crt -text -noout | grep -A1 "1.3.6.1.4.1.59999.1.4"
+AIP_CAPABILITIES_OID="$(node --input-type=module -e 'import contract from "./contracts/aip-1.json" with { type: "json" }; const extension = contract.extensions.find(({ constant }) => constant === "CAPABILITIES"); process.stdout.write(`${contract.oidBase}.${extension.suffix}`)')"
+openssl x509 -in agent.crt -text -noout | grep -A1 "$AIP_CAPABILITIES_OID"
 
 # Calculate Root CA fingerprint for blockchain verification
 openssl x509 -in root-ca.crt -pubkey -noout | openssl sha256
@@ -184,9 +185,31 @@ Identity roots are anchored on Ethereum for immutability.
 
 | Resource                       | Description                            |
 | ------------------------------ | -------------------------------------- |
-| [schemas/](schemas/)           | JSON Schema definitions (ADP-1, PVS-1) |
-| [examples/](examples/)         | Sample payloads and certificates       |
-| [test-vectors/](test-vectors/) | Validation test cases                  |
+| [schemas/](schemas/)           | JSON Schema definitions (ADP-1, PVS-1)            |
+| [types/](types/)               | Generated TypeScript types for all four contracts |
+| [examples/](examples/)         | Sample payloads and certificates                  |
+| [test-vectors/](test-vectors/) | Validation test cases                             |
+
+The same canonical contracts are published in the
+`@acontrollayer/spec-contracts` package. It exports the specification registry,
+AIP-1 extension constants, CTX-1 grammar and reserved prefixes, and the ADP-1
+and PVS-1 JSON Schemas. Its TypeScript declarations are generated from those
+four machine contracts and exported from the `types` subpath:
+
+```js
+import aip from '@acontrollayer/spec-contracts/aip-1' with { type: 'json' };
+import ctx from '@acontrollayer/spec-contracts/ctx-1' with { type: 'json' };
+import pvsSchema from '@acontrollayer/spec-contracts/schemas/pvs-1' with { type: 'json' };
+```
+
+```ts
+import type {
+  Adp1AgentRun,
+  Aip1Contract,
+  Ctx1Contract,
+  Pvs1PolicyVerdict,
+} from '@acontrollayer/spec-contracts/types';
+```
 
 ---
 

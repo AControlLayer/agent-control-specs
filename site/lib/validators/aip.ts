@@ -1,19 +1,27 @@
-import { X509Certificate } from '@peculiar/x509';
+import { PemConverter, X509Certificate } from '@peculiar/x509';
+import aipContract from '../../../contracts/aip-1.json';
+import ctxContract from '../../../contracts/ctx-1.json';
+import { validateAipExtensionValue } from './aip-extension-values.mjs';
+import { verifyCertificateSignatureChain } from './aip-signature.mjs';
 
-export const AIP_OIDS = {
-  VERSION: '1.3.6.1.4.1.59999.1.1',
-  ROLE: '1.3.6.1.4.1.59999.1.2',
-  TENANT_ID: '1.3.6.1.4.1.59999.1.3',
-  CAPABILITIES: '1.3.6.1.4.1.59999.1.4',
-  ANCHOR_CHAIN: '1.3.6.1.4.1.59999.1.5',
-  AUDIENCE: '1.3.6.1.4.1.59999.1.6',
-  ENVIRONMENT: '1.3.6.1.4.1.59999.1.7',
-};
+const extensionOid = (extension: { suffix: number }) =>
+  `${aipContract.oidBase}.${extension.suffix}`;
+const coreConformance = aipContract.conformance.levels.find(
+  ({ level }) => level === 1,
+);
+
+if (!coreConformance) {
+  throw new Error('AIP-1 contract must define Level 1 conformance');
+}
+
+export const AIP_OIDS = Object.fromEntries(
+  aipContract.extensions.map((extension) => [extension.constant, extensionOid(extension)]),
+) as Record<string, string>;
 
 export interface CheckResult {
-    name: string;
-    passed: boolean;
-    message: string;
+  name: string;
+  passed: boolean;
+  message: string;
 }
 
 export interface ValidationResult {
@@ -21,64 +29,100 @@ export interface ValidationResult {
   checks: CheckResult[];
 }
 
-export function validateAip(pem: string): ValidationResult {
-    const checks: CheckResult[] = [];
-    let isValid = true;
+const parseIssuerCertificates = (pem: string) =>
+  PemConverter.decodeWithHeaders(pem)
+    .filter(({ type }) => type === PemConverter.CertificateTag)
+    .map(({ rawData }) => new X509Certificate(rawData));
 
-    try {
-      if (!pem || !pem.trim()) throw new Error("Empty Input");
+export async function validateAip(
+  pem: string,
+  issuerChainPem: string,
+): Promise<ValidationResult> {
+  const checks: CheckResult[] = [];
+  let isValid = true;
 
-      // 1. Parse Certificate
-      const cert = new X509Certificate(pem);
-      checks.push({ name: 'Format', passed: true, message: 'Valid X.509 Certificate Format' });
+  try {
+    if (!pem?.trim()) throw new Error('Empty leaf certificate input');
 
-      // 2. Validity Period Check (Max 15 minutes)
-      const notBefore = cert.notBefore.getTime();
-      const notAfter = cert.notAfter.getTime();
-      const durationMs = notAfter - notBefore;
-      const durationMinutes = durationMs / (1000 * 60);
+    const cert = new X509Certificate(pem);
+    checks.push({ name: 'Format', passed: true, message: 'Valid X.509 certificate format' });
 
-      const now = new Date().getTime();
-      const isExpired = now > notAfter;
-      const isNotYetValid = now < notBefore;
+    const notBefore = cert.notBefore.getTime();
+    const notAfter = cert.notAfter.getTime();
+    const durationMinutes = (notAfter - notBefore) / (1000 * 60);
+    const now = Date.now();
 
-      if (isExpired) {
-        checks.push({ name: 'Expiration', passed: false, message: `Certificate Expired at ${cert.notAfter.toISOString()}` });
-        isValid = false;
-      } else if (isNotYetValid) {
-         checks.push({ name: 'Activation', passed: false, message: `Certificate not valid until ${cert.notBefore.toISOString()}` });
-         isValid = false;
-      } else {
-        checks.push({ name: 'Validity', passed: true, message: 'Certificate is currently within validity window' });
-      }
-
-      if (durationMinutes > 15) {
-        checks.push({ name: 'Lifetime', passed: false, message: `Duration is ${durationMinutes.toFixed(1)} mins (Max allowed: 15 mins)` });
-        isValid = false;
-      } else {
-        checks.push({ name: 'Lifetime', passed: true, message: `Duration is ${durationMinutes.toFixed(1)} mins (<= 15 mins)` });
-      }
-
-      // 3. Check Required OIDs
-      const extensions = cert.extensions;
-      const checkOid = (oid: string, name: string) => {
-        const found = extensions.find(e => e.type === oid);
-        if (found) {
-          checks.push({ name: `OID: ${name}`, passed: true, message: `Found ${oid}` });
-        } else {
-          checks.push({ name: `OID: ${name}`, passed: false, message: `Missing required extension ${oid}` });
-          isValid = false;
-        }
-      };
-
-      checkOid(AIP_OIDS.VERSION, 'AIP-Version');
-      checkOid(AIP_OIDS.TENANT_ID, 'Tenant-ID');
-      checkOid(AIP_OIDS.CAPABILITIES, 'Capability-Set');
-
-    } catch (e: any) {
-      checks.push({ name: 'Format', passed: false, message: 'Failed to parse certificate: ' + e.message });
+    if (now > notAfter) {
+      checks.push({ name: 'Expiration', passed: false, message: `Certificate expired at ${cert.notAfter.toISOString()}` });
       isValid = false;
+    } else if (now < notBefore) {
+      checks.push({ name: 'Activation', passed: false, message: `Certificate is not valid until ${cert.notBefore.toISOString()}` });
+      isValid = false;
+    } else {
+      checks.push({ name: 'Validity', passed: true, message: 'Certificate is currently within its validity window' });
     }
 
-    return { valid: isValid, checks };
+    if (durationMinutes > aipContract.certificateLifetime.maximumMinutes) {
+      checks.push({ name: 'Lifetime', passed: false, message: `Duration is ${durationMinutes.toFixed(1)} minutes (maximum: ${aipContract.certificateLifetime.maximumMinutes})` });
+      isValid = false;
+    } else {
+      checks.push({ name: 'Lifetime', passed: true, message: `Duration is ${durationMinutes.toFixed(1)} minutes (maximum: ${aipContract.certificateLifetime.maximumMinutes})` });
+    }
+
+    const requiredExtensions = new Set(coreConformance.requiredExtensions);
+    for (const extension of aipContract.extensions) {
+      const oid = extensionOid(extension);
+      const matches = cert.extensions.filter(({ type }) => type === oid);
+      const required = requiredExtensions.has(extension.constant);
+      if (matches.length === 0 && !required) continue;
+      checks.push({
+        name: `OID: ${extension.name}`,
+        passed: matches.length === 1,
+        message: matches.length === 1
+          ? `Found ${oid}`
+          : matches.length === 0
+            ? `Missing required extension ${oid}`
+            : `Duplicate extension ${oid}`,
+      });
+      if (matches.length !== 1) {
+        isValid = false;
+        continue;
+      }
+      try {
+        validateAipExtensionValue(extension, matches[0].value, ctxContract);
+        checks.push({
+          name: `DER: ${extension.name}`,
+          passed: true,
+          message: `Valid ${extension.dataType} encoding and contract value`,
+        });
+      } catch (error) {
+        checks.push({
+          name: `DER: ${extension.name}`,
+          passed: false,
+          message: error instanceof Error ? error.message : String(error),
+        });
+        isValid = false;
+      }
+    }
+
+    const issuers = issuerChainPem?.trim()
+      ? parseIssuerCertificates(issuerChainPem)
+      : [];
+    const signature = await verifyCertificateSignatureChain(cert, issuers);
+    checks.push({
+      name: 'Signature',
+      passed: signature.verified,
+      message: signature.message,
+    });
+    if (!signature.verified) isValid = false;
+  } catch (error) {
+    checks.push({
+      name: 'Format',
+      passed: false,
+      message: `Failed to parse or verify certificate: ${error instanceof Error ? error.message : String(error)}`,
+    });
+    isValid = false;
+  }
+
+  return { valid: isValid, checks };
 }

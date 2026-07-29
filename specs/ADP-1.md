@@ -208,8 +208,8 @@ An **Agent Step** is the core unit of work: **Action → Observation → Reflect
 ADP-1 is explicitly **AIP-aware** but does not require consumers to understand PKI. The `agent.aip` block bridges the two:
 
 - `cert_fingerprint` — Matches the SHA-256 fingerprint of the AIP-1 X.509 certificate used during the run.
-- `tenant_id` — Mirrors AIP `Tenant-ID` (`1.3.6.1.4.1.59999.1.3`).
-- `capabilities` — Mirrors or derives from AIP `Capability-Set` (`1.3.6.1.4.1.59999.1.4`).
+- `tenant_id` — Mirrors the AIP `Tenant-ID` extension.
+- `capabilities` — Mirrors or derives from the AIP `Capability-Set` extension.
 
 Implementations MAY include additional AIP-derived metadata in `agent` or `metadata`.
 
@@ -230,6 +230,7 @@ ADP-1 RECOMMENDS representing policy verdicts (e.g., from The Sentry) as special
     "type": "tool_result",
     "output": {
       "version": "pvs-1",
+      "decision": "deny",
       "approved": false,
       "reasoning": "Draft contained direct SSN.",
       "policy_violations": ["No PII"],
