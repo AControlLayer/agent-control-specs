@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Proposed PVS-2 RFC for a fail-closed, proposal-bound `revise` outcome with a
+  single disposition authority, structured revision constraints, immutable
+  privileged context, independently verified revision authority, and bounded
+  audit chains
 - `@acontrollayer/spec-contracts` package with canonical registry,
   AIP-1, CTX-1, ADP-1, and PVS-1 machine exports
 - Deterministically generated TypeScript types for all four machine contracts,
