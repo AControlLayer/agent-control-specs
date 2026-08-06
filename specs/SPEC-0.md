@@ -3,7 +3,8 @@ spec: SPEC-0
 title: Specification Process
 subtitle: Meta-Specification for ACL Standards
 author: AControlLayer (ACL) Team <specs@acontrollayer.com>
-status: Request for Comment (RFC)
+status: Withdrawn
+withdrawn: 2026-08-05
 type: Informational
 category: Process
 created: 2025-12-14
@@ -13,6 +14,18 @@ replaces: None
 ---
 
 # SPEC-0: Specification Process
+
+## ⚠️ WITHDRAWN — 2026-08-05
+
+**This meta-specification is withdrawn.**
+
+SPEC-0 defined the process by which ACL specifications advanced through RFC, Candidate, and Final status. Every specification it governed — AIP-1, ADP-1, PVS-1, and CTX-1 — has been withdrawn, so it now governs nothing.
+
+Leaving it published would imply an active specification program that no longer exists. ACL's work in this area profiles existing standards instead of defining new ones, and contributions to those standards follow their own processes rather than this one.
+
+**No successor version is planned.** The text below is retained for the historical record only.
+
+---
 
 ## Status of This Memo
 

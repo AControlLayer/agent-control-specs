@@ -3,7 +3,8 @@ spec: AIP-1
 title: Agent Identity Protocol
 subtitle: The Standard for Autonomous Trust
 author: AControlLayer (ACL) Team <specs@acontrollayer.com>
-status: Request for Comment (RFC)
+status: Withdrawn
+withdrawn: 2026-08-05
 type: Standards Track
 category: Identity
 created: 2025-12-09
@@ -13,6 +14,18 @@ replaces: None
 ---
 
 # AIP-1: Agent Identity Protocol
+
+## ⚠️ WITHDRAWN — 2026-08-05
+
+**This specification is withdrawn and must not be implemented.**
+
+It was published at RFC status seeking community feedback. A prior-art review found that [SPIFFE](https://spiffe.io/) and the IETF [WIMSE](https://datatracker.ietf.org/wg/wimse/about/) working group already specifies this domain more completely. Continuing to develop this document would duplicate existing standards rather than add to them.
+
+These documents also contain unresolved defects, at least one with security implications. They are withdrawn rather than corrected: correcting a specification that should not exist is not the right remedy, and a corrected version would still be a duplicate.
+
+**No successor version is planned.** ACL's own work in this area now profiles existing standards instead of defining new ones. The text below is retained for the historical record only.
+
+---
 
 ## Status of This Memo
 

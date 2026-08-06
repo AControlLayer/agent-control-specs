@@ -1,11 +1,23 @@
-[![Status: RFC](https://img.shields.io/badge/Status-RFC-blue?style=for-the-badge)](https://github.com/chrisbaber/agent-control-specs)
+[![Status: Withdrawn](https://img.shields.io/badge/Status-Withdrawn-red?style=for-the-badge)](specs/README.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-# AControlLayer Standards
+# AControlLayer Standards — withdrawn
 
-[![Specs Site](https://img.shields.io/badge/specs-live-gold)](https://specs.acontrollayer.com)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Blockchain](https://img.shields.io/badge/blockchain-sepolia-green)](https://sepolia.etherscan.io/tx/0x9349d41f0c92d128cbc07e8d4697a92fa7d107b2468c1f2fc0e9a3bc6c74a33a)
+> ## ⚠️ These specifications were withdrawn on 2026-08-05
+>
+> **AIP-1, ADP-1, PVS-1, CTX-1 and SPEC-0 must not be implemented.**
+>
+> A prior-art review found that established standards — [SPIFFE](https://spiffe.io/) and IETF [WIMSE](https://datatracker.ietf.org/wg/wimse/about/), [OpenTelemetry](https://opentelemetry.io/), [XACML 3.0](https://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html) and [OpenID AuthZEN](https://openid.net/wg/authzen/), and [SPKI (RFC 2693, 1999)](https://www.rfc-editor.org/rfc/rfc2693.html) — already cover each of these domains more completely. Continuing to develop them would have duplicated existing work rather than added to it.
+>
+> They also contain unresolved defects, at least one with security implications. They are withdrawn rather than corrected, because a corrected version would still be a duplicate.
+>
+> **No successor is planned.** ACL profiles existing standards instead of defining new ones. See [specs/README.md](specs/README.md) for the per-specification record.
+>
+> The `@acontrollayer/spec-contracts` package referenced below was never published to the npm registry. The machine-readable artifacts in this repository — schemas, types, examples, test vectors — are withdrawn along with the documents they encode and should not be used to validate anything.
+>
+> Everything below this notice is retained for the historical record, with only status markers updated. It describes the specifications as they were, including instructions to implement them and links to a live validator. **Do not follow it.**
+
+---
 
 ## The Problem: An Internet of Un-Governed Agents
 
@@ -105,11 +117,11 @@ This repository contains four core specifications:
 
 | Spec                      | Title                         | Category     | Status | Description                                                      |
 | ------------------------- | ----------------------------- | ------------ | ------ | ---------------------------------------------------------------- |
-| [AIP-1](specs/AIP-1.md)   | Agent Identity Protocol       | Identity     | RFC    | X.509 certificates with custom OIDs, blockchain-anchored root CA |
-| [ADP-1](specs/ADP-1.md)   | Agent Data Protocol           | Data         | RFC    | Action-Observation-Reflection format for agent runs              |
-| [PVS-1](specs/PVS-1.md)   | Policy Verdict Schema         | Policy       | RFC    | JSON structure for policy engine verdicts                        |
-| [CTX-1](specs/CTX-1.md)   | Capability & Trust eXtensions | Capabilities | RFC    | Capability string naming conventions                             |
-| [SPEC-0](specs/SPEC-0.md) | Specification Process         | Meta         | RFC    | Governance and document structure                                |
+| [AIP-1](specs/AIP-1.md)   | Agent Identity Protocol       | Identity     | Withdrawn | X.509 certificates with custom OIDs, blockchain-anchored root CA |
+| [ADP-1](specs/ADP-1.md)   | Agent Data Protocol           | Data         | Withdrawn | Action-Observation-Reflection format for agent runs              |
+| [PVS-1](specs/PVS-1.md)   | Policy Verdict Schema         | Policy       | Withdrawn | JSON structure for policy engine verdicts                        |
+| [CTX-1](specs/CTX-1.md)   | Capability & Trust eXtensions | Capabilities | Withdrawn | Capability string naming conventions                             |
+| [SPEC-0](specs/SPEC-0.md) | Specification Process         | Meta         | Withdrawn | Governance and document structure                                |
 
 ---
 
