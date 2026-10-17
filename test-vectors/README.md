@@ -1,5 +1,7 @@
 # Test Vectors
 
+> **Withdrawn.** The drafts these files encode were withdrawn on August 8, 2026. They are kept for historical reference only, are not standards, and no product conforms to them. Do not use these files to validate anything. See [specs/README.md](../specs/README.md).
+
 This directory contains test vectors for validating implementations of ACL specifications.
 
 ## Files
@@ -64,11 +66,7 @@ console.log(`\nResults: ${passed} passed, ${failed} failed`);
 
 ## Conformance Testing
 
-Implementations claiming conformance to ACL specifications SHOULD:
-
-1. Pass all `valid: true` test vectors (accept valid inputs)
-2. Reject all `valid: false` test vectors (reject invalid inputs)
-3. Document any deviations with rationale
+_This section was removed when the drafts were withdrawn. It described how implementations could claim conformance; no implementation can conform to a withdrawn draft._
 
 ## Contributing
 

@@ -1,5 +1,7 @@
 # Examples
 
+> **Withdrawn.** The drafts these files encode were withdrawn on August 8, 2026. They are kept for historical reference only, are not standards, and no product conforms to them. Do not use these files to validate anything. See [specs/README.md](../specs/README.md).
+
 This directory contains example files demonstrating ACL specifications in practice.
 
 ## Directory Structure
@@ -52,7 +54,7 @@ ajv validate -s pvs-1.schema.json -d ../examples/pvs/sample-verdict-approved.jso
 
 These examples serve as:
 
-1. **Reference implementations** - See how the schemas are used in practice
+1. **Usage samples** - See how the schemas were meant to be used
 2. **Test fixtures** - Use in your test suites
 3. **Documentation** - Understand the specification through concrete examples
 

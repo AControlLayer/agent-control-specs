@@ -1,5 +1,7 @@
 # Sample AIP-1 Certificates
 
+> **Withdrawn.** The drafts these files encode were withdrawn on August 8, 2026. They are kept for historical reference only, are not standards, and no product conforms to them. Do not use these files to validate anything. See [specs/README.md](../../specs/README.md).
+
 This directory contains example X.509 certificates demonstrating the AIP-1 certificate profile.
 
 ## Files

@@ -1,24 +1,34 @@
 # Security Policy
 
+## Status of the specifications
+
+Every draft specification in this repository (SPEC-0, AIP-1, ADP-1, PVS-1, CTX-1 and the proposed PVS-2 revision) was withdrawn on August 8, 2026. They are kept for historical reference only. They are not standards, no product conforms to them, and they should not be implemented.
+
+The withdrawn drafts contain unresolved defects, at least one with security implications. They will not be corrected. If you built something on one of them, migrate to the established standard that covers the same subject; [specs/README.md](specs/README.md) lists them.
+
+## Supported Versions
+
+| Version | Supported |
+|---------|-----------|
+| Any draft specification (1.x.x) | No — withdrawn August 8, 2026 |
+| This repository and the specs.acontrollayer.com site | Yes |
+
 ## Reporting a Vulnerability
 
-The Agent Control Layer team takes security issues seriously. We appreciate your efforts to responsibly disclose your findings.
-
-### How to Report
-
-**DO NOT** create a public GitHub issue for security vulnerabilities.
-
-Instead, please report security vulnerabilities by emailing:
+Report security issues in this repository or in the specs.acontrollayer.com site — for example, something the site serves that it should not — by email to:
 
 **security@acontrollayer.com**
 
-Include the following information:
+**DO NOT** create a public GitHub issue for security vulnerabilities.
 
-1. **Description**: A clear description of the vulnerability
-2. **Impact**: The potential impact of the vulnerability
-3. **Affected Specs**: Which specifications are affected (AIP-1, ADP-1, PVS-1, CTX-1)
+Include:
+
+1. **Description**: A clear description of the issue
+2. **Impact**: What an attacker could do
+3. **Location**: The file, page or URL affected
 4. **Reproduction**: Steps to reproduce or proof-of-concept
-5. **Suggested Fix**: If you have suggestions for how to fix the issue
+
+Reports about a defect in a withdrawn draft are welcome but will not lead to a corrected draft.
 
 ### Response Timeline
 
@@ -27,30 +37,3 @@ Include the following information:
 | Initial Response | Within 48 hours |
 | Status Update | Within 7 days |
 | Resolution Target | Within 90 days |
-
-### What to Expect
-
-1. **Acknowledgment**: We will acknowledge receipt of your report
-2. **Assessment**: We will assess the vulnerability and its impact
-3. **Communication**: We will keep you informed of our progress
-4. **Credit**: We will credit you in the fix (unless you prefer anonymity)
-
-## Security Considerations in Specifications
-
-Each ACL specification includes a Security Considerations section addressing:
-
-- **AIP-1**: Certificate lifecycle, key management, blockchain anchor integrity
-- **ADP-1**: Data integrity, AIP linkage verification, audit trail security
-- **PVS-1**: Policy bypass prevention, verdict integrity
-- **CTX-1**: Capability escalation prevention, namespace security
-
-## Supported Versions
-
-| Version | Supported |
-|---------|-----------|
-| 1.x.x   | Yes       |
-
-## PGP Key
-
-For encrypted communications, our PGP key is available at:
-https://acontrollayer.com/.well-known/pgp-key.txt

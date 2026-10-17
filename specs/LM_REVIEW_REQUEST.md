@@ -1,9 +1,18 @@
 ---
 title: LM Review Request – AIP-1, ADP-1, PVS-1, CTX-1
-status: Draft
+status: Withdrawn
+withdrawn: 2026-08-08
 audience: Claude, Gemini, and other LMs with repo access
 created: 2025-12-10
 ---
+
+# LM Review Request – AIP-1, ADP-1, PVS-1, CTX-1
+
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This document reviews drafts that were withdrawn on August 8, 2026. It is kept for historical reference only. The drafts it discusses are not standards, and no product conforms to them.
+
+It was written in December 2025 as an internal design review. Its references to source files and features describe a private codebase as it was then; they are not statements about what AControlLayer does today.
+<!-- withdrawal-notice:end -->
 
 ## Context
 

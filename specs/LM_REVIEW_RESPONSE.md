@@ -1,5 +1,11 @@
 # LM Review Response: AIP-1, ADP-1, PVS-1, CTX-1
 
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This document reviews drafts that were withdrawn on August 8, 2026. It is kept for historical reference only. The drafts it discusses are not standards, and no product conforms to them.
+
+It was written in December 2025 as an internal design review. Its references to source files and features describe a private codebase as it was then; they are not statements about what AControlLayer does today.
+<!-- withdrawal-notice:end -->
+
 **Reviewer:** Claude (Opus 4)
 **Date:** 2025-12-10
 **Scope:** Design review of ACL's emerging standards layer

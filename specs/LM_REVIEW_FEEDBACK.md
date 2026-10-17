@@ -1,6 +1,12 @@
 # ACL Specs Review Feedback
 
-**Status:** Draft / Review Complete
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This document reviews drafts that were withdrawn on August 8, 2026. It is kept for historical reference only. The drafts it discusses are not standards, and no product conforms to them.
+
+It was written in December 2025 as an internal design review. Its references to source files and features describe a private codebase as it was then; they are not statements about what AControlLayer does today.
+<!-- withdrawal-notice:end -->
+
+**Status:** Withdrawn
 **Date:** 2025-12-10
 **Reviewer:** Gemini (Agent Control Layer Team)
 
