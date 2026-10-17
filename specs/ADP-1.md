@@ -4,26 +4,22 @@ title: Agent Data Protocol
 subtitle: Universal Adapter for Agent Work
 author: AControlLayer (ACL) Team <specs@acontrollayer.com>
 status: Withdrawn
-withdrawn: 2026-08-05
+withdrawn: 2026-08-08
 type: Standards Track
 category: Data
 created: 2025-12-10
-updated: 2025-12-14
+updated: 2026-10-17
 requires: AIP-1, CTX-1
 replaces: None
 ---
 
 # ADP-1: Agent Data Protocol
 
-## ⚠️ WITHDRAWN — 2026-08-05
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This draft was withdrawn on August 8, 2026. It is kept for historical reference and is not a standard, and no product conforms to it.
 
-**This specification is withdrawn and must not be implemented.**
-
-It was published at RFC status seeking community feedback. A prior-art review found that [OpenTelemetry](https://opentelemetry.io/) and [W3C Trace Context](https://www.w3.org/TR/trace-context/) already specifies this domain more completely. Continuing to develop this document would duplicate existing standards rather than add to them.
-
-These documents also contain unresolved defects, at least one with security implications. They are withdrawn rather than corrected: correcting a specification that should not exist is not the right remedy, and a corrected version would still be a duplicate.
-
-**No successor version is planned.** ACL's own work in this area now profiles existing standards instead of defining new ones. The text below is retained for the historical record only.
+Established standards already cover this subject more completely: [OpenTelemetry](https://opentelemetry.io/) and [W3C Trace Context](https://www.w3.org/TR/trace-context/). Continuing this draft would have duplicated them rather than added to them. It also contains unresolved defects, at least one with security implications, so it was withdrawn rather than corrected. No successor is planned. Do not implement it.
+<!-- withdrawal-notice:end -->
 
 ---
 
@@ -323,16 +319,7 @@ A JSON Schema for ADP-1 is provided at `schemas/adp-1.schema.json`. Conforming i
 
 ## 9. Reference Implementation
 
-The ACL implementation provides the reference mapping:
-
-| ADP Field | ACL Source |
-|-----------|------------|
-| `run_id` | `workflow_run.id` |
-| `tenant_id` | `workflow_runs.tenant_id` |
-| `agent.agent_id` | `agentKey` |
-| `agent.aip.cert_fingerprint` | `agent_executions.crypto_identity` |
-| `final_output` | `safeOutput` from agent-executor |
-| `metadata.total_tokens` | Sum from `agent_executions` |
+_This section was removed when the draft was withdrawn. It described AControlLayer as the reference implementation of this draft and mapped its fields to tables in a private codebase. No product conforms to a withdrawn draft. The earlier text is in the repository's git history._
 
 ## 10. Future Work
 

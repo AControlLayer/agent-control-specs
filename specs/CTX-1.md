@@ -4,26 +4,22 @@ title: Capability & Trust eXtensions
 subtitle: Standard Capability Strings for AIP & ADP
 author: AControlLayer (ACL) Team <specs@acontrollayer.com>
 status: Withdrawn
-withdrawn: 2026-08-05
+withdrawn: 2026-08-08
 type: Informational
 category: Capabilities
 created: 2025-12-10
-updated: 2025-12-14
+updated: 2026-10-17
 requires: None
 replaces: None
 ---
 
 # CTX-1: Capability & Trust eXtensions
 
-## ⚠️ WITHDRAWN — 2026-08-05
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This draft was withdrawn on August 8, 2026. It is kept for historical reference and is not a standard, and no product conforms to it.
 
-**This specification is withdrawn and must not be implemented.**
-
-It was published at RFC status seeking community feedback. A prior-art review found that [SPKI (RFC 2693, 1999)](https://www.rfc-editor.org/rfc/rfc2693.html) already specifies this domain more completely. Continuing to develop this document would duplicate existing standards rather than add to them.
-
-These documents also contain unresolved defects, at least one with security implications. They are withdrawn rather than corrected: correcting a specification that should not exist is not the right remedy, and a corrected version would still be a duplicate.
-
-**No successor version is planned.** ACL's own work in this area now profiles existing standards instead of defining new ones. The text below is retained for the historical record only.
+Established standards already cover this subject more completely: [SPKI (RFC 2693, 1999)](https://www.rfc-editor.org/rfc/rfc2693.html). Continuing this draft would have duplicated them rather than added to them. It also contains unresolved defects, at least one with security implications, so it was withdrawn rather than corrected. No successor is planned. Do not implement it.
+<!-- withdrawal-notice:end -->
 
 ---
 

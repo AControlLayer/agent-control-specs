@@ -1,16 +1,23 @@
 ---
 title: "RFC: Add a structured revise outcome in PVS-2"
 author: AControlLayer (ACL) Team <specs@acontrollayer.com>
-status: Proposed
+status: Withdrawn
+withdrawn: 2026-08-08
 type: Major Change Proposal
 category: Policy
 created: 2026-07-22
-updated: 2026-07-22
+updated: 2026-10-17
 affects: PVS-1
 proposed_successor: PVS-2
 ---
 
 # RFC: Add a Structured `revise` Outcome in PVS-2
+
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This draft was withdrawn on August 8, 2026. It is kept for historical reference and is not a standard, and no product conforms to it.
+
+It proposed a revision of PVS-1, which was withdrawn on the same date, and it relied on the SPEC-0 process, which was withdrawn with it. It will not advance. Do not implement it.
+<!-- withdrawal-notice:end -->
 
 ## Status of This Proposal
 

@@ -1,18 +1,23 @@
-# Agent Control Specs
+# AControlLayer draft specifications — withdrawn
 
-Welcome to the Agent Control Layer specifications documentation.
+> **Withdrawn.** Every draft specification published on this site was withdrawn on August 8, 2026. They are kept for historical reference only. None of them is a standard, and no product conforms to them.
 
-## The Problem: An Internet of Un-Governed Agents
+AControlLayer published these drafts in 2025 and 2026 for community feedback. A review found that established standards already cover each of their subjects more completely, so the drafts were withdrawn rather than developed further. No successor is planned.
 
-As AI agents proliferate, the internet risks becoming a noisy, chaotic, and dangerous place. Without a standardized control layer, agents will struggle to trust one another. The **Agent Control Layer (ACL)** provides the missing infrastructure for identity, governance, and trust.
+Our current work aligns with the OWASP Agent Control Standard (ACS) draft rather than these specifications.
 
-## Core Implementations
+## Withdrawn drafts
 
--   [Agent Identity Protocol (AIP-1)](/docs/AIP-1)
--   [Agent Data Protocol (ADP-1)](/docs/ADP-1)
--   [Policy Verdict Schema (PVS-1)](/docs/PVS-1)
--   [Capability & Trust eXtensions (CTX-1)](/docs/CTX-1)
+| Draft | Title | Status | Already covered by |
+|-------|-------|--------|--------------------|
+| [SPEC-0](/docs/SPEC-0) | Specification Process | Withdrawn | — governed only the drafts below |
+| [AIP-1](/docs/AIP-1) | Agent Identity Protocol | Withdrawn | SPIFFE, IETF WIMSE |
+| [ADP-1](/docs/ADP-1) | Agent Data Protocol | Withdrawn | OpenTelemetry, W3C Trace Context |
+| [PVS-1](/docs/PVS-1) | Policy Verdict Schema | Withdrawn | XACML 3.0, OpenID AuthZEN |
+| [CTX-1](/docs/CTX-1) | Capability & Trust eXtensions | Withdrawn | SPKI (RFC 2693) |
 
-## Tools
+A proposed revision, PVS-2, was withdrawn with them. See [the withdrawal record](/docs/README) for details.
 
--   [Manifest Validator](/validator)
+## Validators
+
+The interactive validators and the `/api/validate` endpoints that used to be on this site have been removed. They checked data against withdrawn drafts, so a passing result meant nothing.

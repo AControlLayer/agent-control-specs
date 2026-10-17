@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "copy-specs": "node ../scripts/materialize-site-content.mjs",
-    "test": "node --test test-ajv.js test-*.mjs",
+    "test": "node --test test-ajv.js",
     "dev": "npm run copy-specs && next dev",
     "build": "npm run copy-specs && next build",
     "start": "next start"
@@ -14,14 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.6.0",
-    "@peculiar/webcrypto": "^1.5.0",
-    "@peculiar/x509": "^1.14.2",
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
-    "ajv": "8.18.0",
-    "ajv-formats": "^3.0.1",
-    "next": "15.5.21",
+    "next": "15.5.28",
     "nextra": "3.3.1",
     "nextra-theme-docs": "3.3.1",
     "react": "^18.3.1",
@@ -31,7 +26,14 @@
   "overrides": {
     "next": {
       "postcss": "^8.5.26",
-      "sharp": "0.35.3"
+      "sharp": "0.35.5"
+    },
+    "speech-rule-engine": {
+      "@xmldom/xmldom": "0.9.12"
     }
+  },
+  "devDependencies": {
+    "ajv": "8.18.0",
+    "ajv-formats": "^3.0.1"
   }
 }

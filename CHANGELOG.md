@@ -7,7 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+### Removed
+
+- Interactive validators and the `/api/validate/adp`, `/api/validate/aip`,
+  `/api/validate/ctx` and `/api/validate/pvs` endpoints from the public site.
+  They validated data against withdrawn drafts, so a passing result meant
+  nothing. `/validator` now explains that they were removed.
+- The drafts' text from the public site. Every page under `/docs/` now shows
+  only the document's withdrawal notice and a link to the historical text in
+  this repository; the URLs are unchanged.
+- "Reference implementation" sections and conformance-claim statements from
+  AIP-1, ADP-1 and SPEC-0. They described a product as conforming to a draft;
+  no product conforms to a withdrawn draft.
+- The README's historical material: the blockchain-anchor status table and
+  transaction, the validator quickstart, the implementation guide, the audit
+  checklist, the roadmap and the "reference implementation" section.
+- The site's validator-only dependencies (`@peculiar/*`); `ajv` and
+  `ajv-formats` are now development dependencies used only by tests.
+
+### Changed
+
+- Every withdrawal notice now states: "This draft was withdrawn on August 8,
+  2026. It is kept for historical reference and is not a standard, and no
+  product conforms to it." The recorded withdrawal date is August 8, 2026, the
+  date the withdrawal merged (#5); earlier notices said August 5.
+- The proposed PVS-2 RFC is withdrawn (status `Proposed` → `Withdrawn`).
+- The site build now fails if any document in `specs/` or `rfcs/` is not marked
+  withdrawn on that date.
+- SECURITY.md and CONTRIBUTING.md describe the withdrawn status: no draft
+  version is supported, and changes to the drafts are not accepted.
+
+### Security
+
+- Cleared the high and critical production advisories that `npm audit` reports
+  against the site's lockfile: `next` 15.5.21 → 15.5.28, `sharp` 0.35.3 →
+  0.35.5, `@xmldom/xmldom` 0.9.10 → 0.9.12 (patch bumps, via overrides where a
+  parent pins the version), plus `npm audit fix` for transitive packages.
+
+---
+
+## Withdrawn - 2026-08-08
+
+### Withdrawn
+
+- AIP-1, ADP-1, PVS-1, CTX-1 and SPEC-0 (#5). Established standards already
+  cover each of their subjects more completely, and the drafts contain
+  unresolved defects. They were withdrawn rather than corrected, and no
+  successor is planned. See [specs/README.md](specs/README.md).
+
+### Added (merged in July 2026, never released)
 
 - Proposed PVS-2 RFC for a fail-closed, proposal-bound `revise` outcome with a
   single disposition authority, structured revision constraints, immutable
@@ -21,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deterministic documentation write path and required CI check covering package,
   site, schema, example, vector, build, and package-content validation
 
-### Fixed
+### Fixed (merged in July 2026, never released)
 
 - PVS-1 JSON Schema and examples now enforce the documented required
   `allow | deny | escalate` decision vocabulary and its `approved` projection
@@ -37,7 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 #### Cross-Cutting: Policy Engine Rename
-- **Renamed "The Gavel" to "The Sentry"** across all specs, schemas, examples, and test vectors to match the current ACL reference implementation (`the-sentry.ts`)
+- **Renamed "The Gavel" to "The Sentry"** across all specs, schemas, examples, and test vectors to match the name used in ACL's code (`the-sentry.ts`)
 - Updated `metadata.engine` values from `"the-gavel"` to `"the-sentry"` in PVS-1 spec, schema, examples, and test vectors
 - Updated PVS-1 Section 3 heading from "The Gavel Integration" to "The Sentry Integration"
 - Updated ADP-1 references and sample payloads
@@ -125,33 +173,23 @@ high-stakes scenarios where the engine lacks confidence in its verdict.
 - RBAC to capability mapping guidelines
 
 #### Infrastructure
-- Root CA fingerprint anchored on Ethereum Sepolia
-- Transaction: `0x9349d41f0c92d128cbc07e8d4697a92fa7d107b2468c1f2fc0e9a3bc6c74a33a`
+- _Entry removed on withdrawal. It listed a test-network transaction for the
+  draft's trust anchor; no anchor is operated and none is planned._
 
 ---
 
 ## Version History by Specification
 
-| Specification | Current Version | Initial Release | Last Updated |
-|---------------|-----------------|-----------------|--------------|
-| AIP-1 | 1.0.0 | 2025-12-09 | 2025-12-14 |
-| ADP-1 | 1.0.0 | 2025-12-10 | 2025-12-14 |
-| PVS-1 | 1.2.0 | 2025-12-10 | 2026-03-20 |
-| CTX-1 | 1.0.0 | 2025-12-10 | 2025-12-14 |
+| Specification | Last Version | Initial Release | Status |
+|---------------|--------------|-----------------|--------|
+| SPEC-0 | 1.0.0 | 2025-12-14 | Withdrawn 2026-08-08 |
+| AIP-1 | 1.0.0 | 2025-12-09 | Withdrawn 2026-08-08 |
+| ADP-1 | 1.0.0 | 2025-12-10 | Withdrawn 2026-08-08 |
+| PVS-1 | 1.2.0 | 2025-12-10 | Withdrawn 2026-08-08 |
+| CTX-1 | 1.0.0 | 2025-12-10 | Withdrawn 2026-08-08 |
+| PVS-2 (RFC) | — | never released | Withdrawn 2026-08-08 |
 
----
-
-## Planned Releases
-
-### v1.1.0 (Q1 2026)
-- Ethereum Mainnet Root CA anchoring
-- Extended capability vocabulary
-- Additional test vectors
-
-### v2.0.0 (Future)
-- Post-quantum cryptography support (Dilithium/Kyber)
-- Zero-knowledge proof extensions
-- Signed ADP streams
+No further releases are planned.
 
 ---
 

@@ -4,26 +4,22 @@ title: Agent Identity Protocol
 subtitle: The Standard for Autonomous Trust
 author: AControlLayer (ACL) Team <specs@acontrollayer.com>
 status: Withdrawn
-withdrawn: 2026-08-05
+withdrawn: 2026-08-08
 type: Standards Track
 category: Identity
 created: 2025-12-09
-updated: 2025-12-14
+updated: 2026-10-17
 requires: None
 replaces: None
 ---
 
 # AIP-1: Agent Identity Protocol
 
-## ⚠️ WITHDRAWN — 2026-08-05
+<!-- withdrawal-notice:start -->
+> **Withdrawn.** This draft was withdrawn on August 8, 2026. It is kept for historical reference and is not a standard, and no product conforms to it.
 
-**This specification is withdrawn and must not be implemented.**
-
-It was published at RFC status seeking community feedback. A prior-art review found that [SPIFFE](https://spiffe.io/) and the IETF [WIMSE](https://datatracker.ietf.org/wg/wimse/about/) working group already specifies this domain more completely. Continuing to develop this document would duplicate existing standards rather than add to them.
-
-These documents also contain unresolved defects, at least one with security implications. They are withdrawn rather than corrected: correcting a specification that should not exist is not the right remedy, and a corrected version would still be a duplicate.
-
-**No successor version is planned.** ACL's own work in this area now profiles existing standards instead of defining new ones. The text below is retained for the historical record only.
+Established standards already cover this subject more completely: [SPIFFE](https://spiffe.io/) and the IETF [WIMSE](https://datatracker.ietf.org/wg/wimse/about/) working group. Continuing this draft would have duplicated them rather than added to them. It also contains unresolved defects, at least one with security implications, so it was withdrawn rather than corrected. No successor is planned. Do not implement it.
+<!-- withdrawal-notice:end -->
 
 ---
 
@@ -87,7 +83,7 @@ The `Subject` field MUST uniquely identify the agent. Implementations MAY choose
 - `O` (Organization): The Tenant or Platform Name (e.g., "Acme Corp").
 - `OU` (Organizational Unit): The Agent Role (e.g., "Level 2 Support").
 
-The ACL reference implementation primarily encodes semantics in custom AIP extensions (below) and uses `CN="Agent:<id>"` with static `O`/`OU` values for internal agents.
+This draft placed most semantics in the custom AIP extensions below rather than in the DN.
 
 #### 3.1.2 Custom AIP Extensions (OIDs)
 
@@ -220,9 +216,7 @@ AIP is designed to mitigate the following threats:
 
 ### 7.2 Conformance Statement
 
-Implementations MAY claim conformance as:
-
-> "This implementation conforms to AIP-1 Level [1|2|3]."
+_This section was removed when the draft was withdrawn. It invited implementations to claim conformance; no implementation can conform to a withdrawn draft._
 
 ## 8. Future Work
 
@@ -236,28 +230,7 @@ Future iterations may allow ZK-Proofs within the `Capability-Set` OID, allowing 
 
 ## 9. Reference Implementation
 
-The **Agent Control Layer (ACL)** serves as the canonical reference implementation of AIP.
-
-- **CA Logic**: `lib/security/identity/ca.ts`
-- **Verifier**: `lib/security/identity/verifier.ts`
-- **Anchoring Script**: `scripts/publish-root-ca.ts` (anchors Root CA fingerprint to Ethereum Sepolia)
-
-### 9.1 Implementation Status (ACL v2.1)
-
-The current ACL implementation conforms to AIP-1 Level 2 with the following behaviors:
-
-- **Short-Lived Certificates**: Agent certificates are issued with a configurable lifetime, clamped between 1 and 15 minutes (default 5).
-- **AIP Extensions**:
-  - `AIP-Version` (`.1`): Hardcoded to `"1"` for all issued certificates.
-  - `Agent-Role` (`.2`): Populated from the logical agent key (e.g., `"analyst"`, `"coach"`) when available.
-  - `Tenant-ID` (`.3`): Populated with the tenant identifier when the issuing context provides it.
-  - `Capability-Set` (`.4`): Populated as a JSON array. By default, ACL embeds coarse-grained capabilities such as `["agent:<id>", "tenant:<id>", "service_account:<id>"]` and may be extended with more granular permissions.
-  - `Anchor-Chain` (`.5`): Set to `"ethereum:sepolia"` to reflect the default anchoring chain used by `scripts/publish-root-ca.ts`.
-- **Verification**:
-  - Runtime verification currently checks signature validity, certificate lifetime, and derives the Agent ID from the `CN` field.
-  - On-chain verification of the Root CA fingerprint is defined but intentionally **not** executed on the hot path yet. Operators can use `scripts/publish-root-ca.ts` and future tooling for offline/periodic verification.
-
-Future releases will expand how ACL maps internal RBAC permissions into the `Capability-Set` and may introduce optional mTLS handshakes between agents based directly on AIP certificates.
+_This section was removed when the draft was withdrawn. It described AControlLayer as the reference implementation of this draft, listed source files in a private codebase, and stated that it conformed to a conformance level and anchored a root certificate on a blockchain test network. No product conforms to a withdrawn draft. The earlier text is in the repository's git history._
 
 ## 10. References
 
